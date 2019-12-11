@@ -46,7 +46,7 @@ const nedb = require("./lib/model/_nedb")(DB_PATH, SYSTEM_MODE);
  */
 const slackMsgRegExp = {
   update: new RegExp(`^${EMOJI} update (.+)`),
-  mention: new RegExp(`^${EMOJI} (mention [A-Z]|[0-9])`, "i"),
+  mention: new RegExp(`^${EMOJI} (mention [A-Z]|[0-9])`, 'i'),
   invite: new RegExp(`^${EMOJI} invite (.+)`),
   kick: new RegExp(`^${EMOJI} (kick [A-Z]|[0-9])`, "i"),
   list: new RegExp(`^${EMOJI} (list [A-Z]|[0-9])|list$`, "i")
@@ -230,11 +230,10 @@ const kickMembers = async (memberId, slackEvent) => {
       })
       .catch(err => console.log(err));
   } else if (memberId === slackEvent.user) {
-    await webClient.conversations
-      .leave({
-        channel: slackEvent.channel
-      })
-      .catch(error => console.log(error));
+
+    await webClient.conversations.leave({
+      channel: slackEvent.channel
+    }).catch((error) => console.log(error));
   }
 };
 
