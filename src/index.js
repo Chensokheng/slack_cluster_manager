@@ -307,25 +307,30 @@ const replyToThread = (ch, ts, msg) => {
 const server = http.createServer((req, res) => {
   httpServer(req, res);
 
-  let user_property = {
-    batch: "",
-    virtual_company: "C4K"
-  };
-
-  nedb.find({}, (err, data) => {
-    data.forEach(cluster => {
-      if (
-        cluster.members.includes(req.url.substr(10)) &&
-        req.url.match(new RegExp("^/students/[A-Z0-9]{9}$"))
-      ) {
-        user_property.batch = cluster.cluster_name;
-      }
-    });
-
-    res.write(JSON.stringify(user_property));
+  if (req.url == "/") {
+    res.write("server created");
     res.end();
-  });
+  } else {
+    let user_property = {
+      batch: "",
+      virtual_company: "C4K"
+    };
+
+    nedb.find({}, (err, data) => {
+      data.forEach(cluster => {
+        if (
+          cluster.members.includes(req.url.substr(10)) &&
+          req.url.match(new RegExp("^/students/[A-Z0-9]{9}$"))
+        ) {
+          user_property.batch = cluster.cluster_name;
+        }
+      });
+
+      res.write(JSON.stringify(user_property));
+      res.end();
+    });
+  }
 });
-server.listen(PORT, HOST, () => {
-  console.log(`listening to ${HOST}:${PORT}`);
+server.listen(3000, () => {
+  console.log(`listening to PORT:3000`);
 });
